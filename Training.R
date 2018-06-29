@@ -1,11 +1,5 @@
 tom <- hotdogs[which.max(hotdogs$sodium), ]
-#GGPLOT
-ggplot(gapminder,aes(x=gdpPercap,y=lifeExp,color=continent,size=pop)) + geom_point()+scale_x_log10()+
-  facet_wrap(~year)+expand_limits(y = 0)
-#lineplot
-ggplot(year_continent, aes(x = year, y = meanLifeExp, color = continent)) +
-  geom_line() +
-  expand_limits(y = 0)
+
 
 #dyplr
 Bulgaria%>%group_by(NumberMonitors)%>% 
@@ -40,6 +34,12 @@ bmi_long <- gather(bmi,year , bmi_val, -Country)
 bmi_wide <- spread(bmi_long, year, bmi_val)
 separate(bmi_cc, col = Country_ISO, into = c("Country", "ISO"), sep = "/")
 unite(bmi_cc_clean, Country_ISO, Country, ISO, sep = "-")
+#widening data
+iris$Flower <- 1:nrow(iris)
+iris.wide <- iris %>%
+  gather(key, value, -Species ) %>%
+  separate(key, c("Part", "Measure"), "\\.") %>%
+  spread(Measure, value)
 
 #tibble
 stage_songs %>% 
