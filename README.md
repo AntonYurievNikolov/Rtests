@@ -1,2 +1,2 @@
 # Rtests
-Random R test scripts+duck charts project
+Random R test scripts+work with Stack overflow survey
