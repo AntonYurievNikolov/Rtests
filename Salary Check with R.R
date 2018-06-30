@@ -1,6 +1,9 @@
 
 #Check the clean process versus known mean (~3k)
 mean(Bulgaria$Salary)
+ggplot(Bulgaria,aes(x=Salary))+
+  geom_histogram(bins=15)+
+  scale_x_log10()
 #each opperation above was compared against a target mean, because we work with extremely small dataset
 
 
@@ -27,11 +30,59 @@ ggplot(Bulgaria,aes(x=NumberMonitors ,y=Salary,color = NumberMonitors))+
                col = "black", shape = "M", size = 25)
 
 
+#zoom to 3-5k range
+ggplot(Bulgaria,aes(x=Salary,y=NumberMonitors,color = NumberMonitors,size =Salary))+
+  geom_point()+
+  facet_wrap( ~as.factor(FormalEducation) ,shrink = T )+
+  #scale_x_continuous(limits = c(3000,5000))
+  #with zoom below
+   coord_cartesian( xlim= c(3000,5000)) +
+#theme
+  theme(
+    plot.background = element_blank(),
+   # rect = element_blank(),
+    axis.ticks = element_blank(),
+    axis.line = element_line(color = "black", size = 1),
+    axis.title = element_text(hjust = 0, face = "italic"),
+    axis.text = element_text(color = "black"),
+    strip.text= element_text(hjust = 0, face = "italic"),
+    legend.position = "bottom",
+    legend.direction= "horizontal",
+    panel.spacing.x = unit(0.1, "cm"),
+    panel.spacing.y = unit(0.1, "cm"),
+    plot.margin = unit(c(1,2,1,1), "cm")
+  )
+#+ coord_equal()
+#,scale = "free_x", space = "free_x" 
+
 #Point 3 - Foemal Education
 
 Bulgaria%>%group_by(FormalEducation)%>% 
   summarise(MeanByVC=mean(Salary))
 
+ggplot(Bulgaria,aes(x=FormalEducation ,y=Salary, col = FormalEducation))+
+  geom_point() + 
+  theme_wsj()+
+  theme(
+       axis.text.x =   element_blank(),
+      legend.position = "right",
+      legend.direction= "vertical",
+  ) 
+
+#Pie chart  
+ggplot(Bulgaria,aes(x=1 ,fill=FormalEducation))+ 
+  geom_bar()+
+  coord_polar(theta = "y")+
+  theme_classic()
+
+#Point 4 - years coding
+ggplot(Bulgaria,aes(x=YearsCoding ,y=Salary))+
+  geom_point()+
+  stat_smooth()
+
+ggplot(Bulgaria,aes(x=YearsCodingProf   ,y=Salary))+
+  geom_point()+
+  stat_smooth(method = "lm")
 #Random Checks
 BestPaidJobs<-Bulgaria[Bulgaria$Salary>2*sd(Bulgaria$Salary)+mean(Bulgaria$Salary)  ,]
 

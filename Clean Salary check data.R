@@ -1,8 +1,9 @@
 #install.packages("tidyverse")
 #install.packages("Hmisc")
+#install.packages("ggthemes")
 library(tidyverse)
 library(Hmisc)
-
+library(ggthemes)
 
 path <- file.path("C:\\Users\\User\\Documents\\R", "sur.csv")
 WorldData<-read_csv(path)
@@ -91,4 +92,22 @@ Bulgaria$YearsCoding<-as.integer(Bulgaria$YearsCoding)
 Bulgaria$YearsCodingProf<-as.integer(Bulgaria$YearsCodingProf)
 
 
+Bulgaria<-select(Bulgaria,
+                 Salary,
+                 VersionControl,
+                 DevTy1,
+                 DevTy2,
+                 DevTy3,
+                 YearsCodingProf,
+                 YearsCoding,
+                 IDE,
+                 NumberMonitors,
+                 FormalEducation
+                 )
 
+#Set Default Theme 
+custom_theme <- theme_tufte() +
+  theme(legend.position = c(0.9, 0.9),
+        legend.title = element_text(face = "italic", size = 12),
+        axis.title = element_text(face = "bold", size = 14))
+theme_set(custom_theme)
