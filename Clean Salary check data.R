@@ -1,5 +1,8 @@
 #install.packages("tidyverse")
+#install.packages("Hmisc")
 library(tidyverse)
+library(Hmisc)
+
 
 path <- file.path("C:\\Users\\User\\Documents\\R", "sur.csv")
 WorldData<-read_csv(path)
