@@ -66,7 +66,7 @@ ggplot(Bulgaria,aes(x=FormalEducation ,y=Salary, col = FormalEducation))+
   theme(
        axis.text.x =   element_blank(),
       legend.position = "right",
-      legend.direction= "vertical",
+      legend.direction= "vertical"
   ) 
 
 #Pie chart  
@@ -78,7 +78,9 @@ ggplot(Bulgaria,aes(x=1 ,fill=FormalEducation))+
 #Point 4 - years coding
 ggplot(Bulgaria,aes(x=YearsCoding ,y=Salary))+
   geom_point()+
-  stat_smooth()
+  stat_smooth(aes(group = 1))+
+  stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "errorbar", width = 0.1)+
+
 
 ggplot(Bulgaria,aes(x=YearsCodingProf   ,y=Salary))+
   geom_point()+
