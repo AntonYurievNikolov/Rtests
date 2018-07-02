@@ -1,0 +1,47 @@
+---
+title: "ggvis"
+author: "DataCamp"
+output: html_document
+runtime: shiny
+---
+Have you ever wondered whether there is a clear correlation between the gas consumption of a car and its weight?
+To answer this question, we first have to load the `dplyr` and `ggvis` packages.
+
+```{r message = FALSE}
+library(dplyr)
+library(ggvis)
+```
+
+```{r chained, results = 'hide'}
+mtcars %>%
+  group_by(factor(cyl)) %>%
+  ggvis(~mpg, ~wt, fill = ~cyl) %>%
+  layer_points()
+```
+
+The `ggvis` plot gives us a nice visualization of the `mtcars` data set:
+
+```{r ref.label='chained', echo = FALSE}
+```
+
+
+
+ggvis provides a number of ways to enhance plots with interacticity. For example, the density plot below allows users to set the kernel and bandwidth of the plot.
+
+```{r echo = FALSE, message = FALSE}
+library(ggvis)
+
+mtcars %>% ggvis(x = ~wt) %>%
+    layer_densities(
+      adjust = input_slider(.1, 2, value = 1, step = .1, label = "Bandwidth adjustment"),
+      kernel = input_select(
+        c("Gaussian" = "gaussian",
+          "Epanechnikov" = "epanechnikov",
+          "Rectangular" = "rectangular",
+          "Triangular" = "triangular",
+          "Biweight" = "biweight",
+          "Cosine" = "cosine",
+          "Optcosine" = "optcosine"),
+        label = "Kernel")
+    )
+```
