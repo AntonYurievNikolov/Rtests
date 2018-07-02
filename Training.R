@@ -62,3 +62,9 @@ ind <- which(is.na(weather6$Max.Gust.SpeedMPH))
 c2<-mutate(c1,Date=paste(Year, Month, DayofMonth, sep = "-"))
 
 as.numeric(as.character(year))#coerce factors
+
+#sampling and statistics
+tab <- table(Bulgaria$YearsCoding, Bulgaria$FormalEducation)
+options(scipen = 999, digits = 3) # Print fewer digits
+prop.table(tab)     # Joint proportions
+prop.table(tab, 2)  # Conditional on columns

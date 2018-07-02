@@ -1,13 +1,21 @@
 
 #Check the clean process versus known mean (~3k)
+#each opperation above was compared against a target mean, because we work with extremely small datas
 mean(Bulgaria$Salary)
 ggplot(Bulgaria,aes(x=Salary))+
   geom_histogram(bins=15)+
-  scale_x_log10()
-#each opperation above was compared against a target mean, because we work with extremely small dataset
+ # scale_x_log10()+
+  geom_vline(aes(xintercept = mean(Salary)),col='red',size=2) +
+  geom_vline(aes(xintercept = median(Salary)),col='blue',size=2)+
+  geom_vline(aes(xintercept = quantile(Bulgaria$Salary)[2]),col='yellow',size=2)+
+geom_vline(aes(xintercept = quantile(Bulgaria$Salary)[4]),col='yellow',size=2)
 
+ggplot(Bulgaria,aes(x = 1,y=Salary))+
+  geom_boxplot()
 
 ##GGPLOT2 tests
+
+
 #Point 1 - Why you should use GIT 
 Bulgaria%>%group_by(VersionControl)%>% 
   summarise(MeanByVC=mean(Salary))
