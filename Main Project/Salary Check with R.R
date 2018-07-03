@@ -1,5 +1,5 @@
 
-#Check the clean process versus known mean (~3k)
+###Check the clean process versus known mean (~3k)####
 #each opperation above was compared against a target mean, because we work with extremely small datas
 mean(Bulgaria$Salary)
 ggplot(Bulgaria,aes(x=Salary))+
@@ -13,16 +13,16 @@ geom_vline(aes(xintercept = quantile(Bulgaria$Salary)[4]),col='yellow',size=2)
 ggplot(Bulgaria,aes(x = 1,y=Salary))+
   geom_boxplot()
 
-##GGPLOT2 tests
+###GGPLOT2 tests####
 
 
-#Point 1 - Why you should use GIT 
+###Point 1 - Why you should use GIT ####
 Bulgaria%>%group_by(VersionControl)%>% 
   summarise(MeanByVC=mean(Salary))
 
 ggplot(Bulgaria,aes(x=Salary,y=VersionControl, col = IDE)) + 
   geom_point() + ggplot2::scale_x_log10()
-#Point 2  - The POWER OF MONITORS!!!
+#Point 2  - The POWER OF MONITORS!!!####
 Bulgaria%>%group_by(NumberMonitors)%>% 
   summarise(MeanPerMonitor=mean(Salary))
 
@@ -63,7 +63,7 @@ ggplot(Bulgaria,aes(x=Salary,y=NumberMonitors,color = NumberMonitors,size =Salar
 #+ coord_equal()
 #,scale = "free_x", space = "free_x" 
 
-#Point 3 - Foemal Education
+#Point 3 - Foemal Education####
 
 Bulgaria%>%group_by(FormalEducation)%>% 
   summarise(MeanByVC=mean(Salary))
@@ -83,7 +83,7 @@ ggplot(Bulgaria,aes(x=1 ,fill=FormalEducation))+
   coord_polar(theta = "y")+
   theme_classic()
 
-#Point 4 - years coding
+#Point 4 - years coding####
 ggplot(Bulgaria,aes(x=YearsCoding ,y=Salary))+
   geom_point()+
   stat_smooth(aes(group = 1))+

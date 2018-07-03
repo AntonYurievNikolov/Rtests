@@ -14,7 +14,7 @@ med_IQR <- function(x) {
 posn.d<-position_dodge(width = 0.1)
 
 
-#Heat maps mosaic
+#Heat maps mosaic####
 GGmosaic<- function(data, X, FILL) {
   # Proportions in raw data
   DF <- as.data.frame.matrix(table(data[[X]], data[[FILL]]))

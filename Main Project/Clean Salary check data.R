@@ -113,3 +113,4 @@ custom_theme <- theme_tufte() +
         legend.title = element_text(face = "italic", size = 12),
         axis.title = element_text(face = "bold", size = 14))
 theme_set(custom_theme)
+theme_set(theme_classic())
