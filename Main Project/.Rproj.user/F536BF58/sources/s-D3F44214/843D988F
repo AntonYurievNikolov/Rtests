@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1530628990718.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "843D988F",
+    "lastKnownWriteTime" : 1530431643,
+    "last_content_update" : 1530431643,
+    "path" : "~/RWork/Main Project/Salary check fuctions.R",
+    "project_path" : "Salary check fuctions.R",
+    "properties" : {
+        "cursorPosition" : "58,1",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

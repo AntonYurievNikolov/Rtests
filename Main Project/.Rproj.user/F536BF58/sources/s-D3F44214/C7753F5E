@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1530628970837.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C7753F5E",
+    "lastKnownWriteTime" : 1530628163,
+    "last_content_update" : 1530628163,
+    "path" : "~/RWork/Main Project/Clean Salary check data.R",
+    "project_path" : "Clean Salary check data.R",
+    "properties" : {
+        "cursorPosition" : "115,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
