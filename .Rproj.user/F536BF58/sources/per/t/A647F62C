@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1530554717412.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1315467708",
+    "id" : "A647F62C",
+    "lastKnownWriteTime" : 1530555272,
+    "last_content_update" : 1530555272819,
+    "path" : "~/R/Learning/Modeling and ML.R",
+    "project_path" : "Modeling and ML.R",
+    "properties" : {
+        "cursorPosition" : "65,7",
+        "scrollLine" : "39"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

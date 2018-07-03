@@ -5,8 +5,7 @@ library(tidyverse)
 library(Hmisc)
 library(ggthemes)
 
-path <- file.path("C:\\Users\\User\\Documents\\R", "sur.csv")
-WorldData<-read_csv(path)
+WorldData<-read_csv("sur.csv")
 glimpse(WorldData)
 #Select only what we need - rework with dplyr select(contains(".")) to compare time!
 DontWant1<-str_detect(names(WorldData),"Assess")+
@@ -79,6 +78,9 @@ Bulgaria<-Bulgaria %>%
   filter (Salary <3*IQR(Bulgaria$Salary)+mean(Bulgaria$Salary)) %>% 
   arrange(desc(Salary))
 #Will keep up to 3 Positions
+#Alternative - will change the data
+#mutate(DevType = strsplit(DevType,";"))%>%
+#  unnest(DevType)
 Bulgaria<-Bulgaria%>%separate( col = DevType, into = c("DevTy1","DevTy2","DevTy3"), sep = ";")%>%
   #mainly looking for GIT vs the Rest so 1 column will do
   separate( col = VersionControl, into = c("VersionControl"), sep = ";")%>%

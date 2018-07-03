@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1530555837654.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3758F11A",
+    "lastKnownWriteTime" : 1530555862,
+    "last_content_update" : 1530555862884,
+    "path" : "~/R/Learning/Clusters.R",
+    "project_path" : "Clusters.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
