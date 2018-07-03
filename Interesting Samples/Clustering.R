@@ -1,7 +1,9 @@
 #install.packages("dummies")
 #install.packages("dendextend")
+#install.packages("cluster")
 library(dummies)
 library(dendextend)
+library(cluster)
 #scaling -standartization t value
 #scale(three_trees)
 #Jicard similiarities for binary + dumification
@@ -41,7 +43,41 @@ plot(dend_B)
 dend_20 <- color_branches(dend_B, h = 4)
 plot(dend_20)
 ####K means####
-BsalaryClusters$cluster <- kmeans(Bulgariascaled,5)$cluster
+#Elbow plot 
+tot_withinss <- map_dbl(1:10,  function(k){
+  model <- kmeans(x = Bulgariascaled, centers = k)
+  model$tot.withinss
+})
+
+elbow_df <- data.frame(
+  k = 1:10,
+  tot_withinss = tot_withinss
+)
+
+ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
+  geom_line() +
+  scale_x_continuous(breaks = 1:10)
+#Silhouette####
+sil_width <- map_dbl(2:10,  function(k){
+  model <- pam(x = Bulgariascaled, k = k)
+  model$silinfo$avg.width
+})
+
+sil_df <- data.frame(
+  k = 2:10,
+  sil_width = sil_width
+)
+
+ggplot(sil_df, aes(x = k, y = sil_width)) +
+  geom_line() +
+  scale_x_continuous(breaks = 2:10)
+#pam####
+BsalaryClusters$cluster <- pam(Bulgariascaled,5)$cluster
+ggplot(BsalaryClusters, aes(x = Salary, y = YearsCodingProf, color = factor(cluster), size = cluster)) +
+  geom_point()
+
+#actual algo K - means####
+BsalaryClusters$cluster <- kmeans(Bulgariascaled,4)$cluster
 ggplot(BsalaryClusters, aes(x = Salary, y = YearsCodingProf, color = factor(cluster), size = cluster)) +
   geom_point()
 
