@@ -57,3 +57,8 @@ GGmosaic<- function(data, X, FILL) {
     theme(legend.position = "bottom")
   print(g)
 }
+
+
+nrmlizeR <-function(x) {
+  return((x-min(x))/(max(x)-min(x)))
+}
