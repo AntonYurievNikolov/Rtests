@@ -5,7 +5,7 @@ library(tidyverse)
 library(Hmisc)
 library(ggthemes)
 
-WorldData<-read_csv("sur.csv")
+WorldData<-read_csv("sur.zip")
 glimpse(WorldData)
 #Select only what we need - rework with dplyr select(contains(".")) to compare time!
 DontWant1<-str_detect(names(WorldData),"Assess")+
