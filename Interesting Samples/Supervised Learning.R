@@ -43,13 +43,21 @@ ggplot(KmodelAcc, aes(x = k, y=modelAcc))+
   geom_line()
 
 #naive Bayes#####
+
+#Test case#
+testing<-data.frame(
+  YearsCodingProf = as.factor(c(6)),
+  FormalEducation = as.factor(c("Bachelor’s degree (BA, BS, B.Eng., etc.)"))
+  
+)
+
 BulgariaFactors<-
   Bulgaria%>%
   mutate( 
-    YearsCodingProf =as.factor(YearsCodingProf), #scale(YearsCodingProf), 
-    YearsCoding = as.factor(YearsCoding),#scale(YearsCoding) ,
-    FormalEducation = as.factor(FormalEducation),
-    SalaryScaled = cut(as.integer(Salary),breaks = 7)
+    YearsCodingProf =as.factor(YearsCodingProf), 
+    YearsCoding = as.factor(YearsCoding),
+    FormalEducation = factor(FormalEducation),
+    SalaryScaled = cut(as.integer(Salary),breaks = 8)
   )%>%
   select(Salary,SalaryScaled,YearsCodingProf,YearsCoding,FormalEducation)
 
@@ -58,12 +66,25 @@ locmodel <- naive_bayes(
                         data = BulgariaFactors,
                         laplace = 1
                         )
-predict(locmodel,data.frame(
-                                YearsCodingProf = c(6),
-                                FormalEducation = c("Bachelor’s degree (BA, BS, B.Eng., etc.) ")
-                             
-                             ),
+predict(locmodel,testing,
         type = "prob"
 )
 
 
+# Logistic Regression#### better apply to logistics with dummy
+# Examine the dataset to identify potential independent variables
+BulgariaLogistic<-
+  Bulgaria%>%
+  mutate( 
+    YearsCodingProf =as.factor(YearsCodingProf), 
+    YearsCoding = as.factor(YearsCoding),
+    FormalEducation = as.factor(FormalEducation),
+    SalaryScaled = ifelse(Salary > 6000,1,0)
+  )%>%
+  select(Salary,SalaryScaled,YearsCodingProf,YearsCoding,FormalEducation)
+
+donation_model <- glm(SalaryScaled ~ YearsCodingProf + FormalEducation, 
+                      data = BulgariaFactors, family = "binomial")
+summary(donation_model)
+testing[1,]$FormalEducation<-as.factor(c("FormalEducationBachelor’s degree (BA, BS, B.Eng., etc.)"))
+predict(donation_model,testing, type = "response")
