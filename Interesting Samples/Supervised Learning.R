@@ -1,5 +1,7 @@
 #install.packages("class") 
+# install.packages("naivebayes") 
 library(class)
+library(naivebayes)
 #knn#####
 #Scale
 
@@ -41,3 +43,27 @@ ggplot(KmodelAcc, aes(x = k, y=modelAcc))+
   geom_line()
 
 #naive Bayes#####
+BulgariaFactors<-
+  Bulgaria%>%
+  mutate( 
+    YearsCodingProf =as.factor(YearsCodingProf), #scale(YearsCodingProf), 
+    YearsCoding = as.factor(YearsCoding),#scale(YearsCoding) ,
+    FormalEducation = as.factor(FormalEducation),
+    SalaryScaled = cut(as.integer(Salary),breaks = 7)
+  )%>%
+  select(Salary,SalaryScaled,YearsCodingProf,YearsCoding,FormalEducation)
+
+locmodel <- naive_bayes(
+                        SalaryScaled~YearsCodingProf+FormalEducation, 
+                        data = BulgariaFactors,
+                        laplace = 1
+                        )
+predict(locmodel,data.frame(
+                                YearsCodingProf = c(6),
+                                FormalEducation = c("Bachelor’s degree (BA, BS, B.Eng., etc.) ")
+                             
+                             ),
+        type = "prob"
+)
+
+
