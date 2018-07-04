@@ -87,10 +87,10 @@ donation_model <- glm(SalaryScaled ~ YearsCodingProf + FormalEducation,
                       data = BulgariaLogistic, family = "binomial")
 summary(donation_model)
 
-testing<- data.frame(YearsCodingProf = c(1), 
-                     FormalEducation =  c(1) )
-predict(donation_model,testing, type = "response")
-
+#testing<- data.frame(YearsCodingProf = c(1), 
+#                    FormalEducation =  c(1) )
+#predict(donation_model,testing, type = "response")
+predict(donation_model, type = "response")
 
 
 
