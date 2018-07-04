@@ -92,7 +92,22 @@ Bulgaria$YearsCoding[Bulgaria$YearsCoding ==   "30 or more years"]<-"30"
 Bulgaria$YearsCoding<-as.integer(Bulgaria$YearsCoding)
 
 Bulgaria$YearsCodingProf<-as.integer(Bulgaria$YearsCodingProf)
-
+#Formal education as factor
+# Bulgaria$FormalEducation <- factor(Bulgaria$FormalEducation, 
+#                                    levels = c(0, 1, 2, 3, 4, 5, 6, 7), 
+#                                    labels = c("I never completed any formal education", 
+#                                               "Primary/elementary school", 
+#                                               "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)", 
+#                                               "Some college/university study without earning a degree",
+#                                               "Bachelor’s degree (BA, BS, B.Eng., etc.)",
+#                                               
+#                                               "Master’s degree (MA, MS, M.Eng., MBA, etc.)" ,
+#                                               "Associate degree" ,
+#                                               "Other doctoral degree (Ph.D, Ed.D., etc.)"
+#                                               
+#                                    )
+# )
+# #Relevel
 
 Bulgaria<-select(Bulgaria,
                  Salary,

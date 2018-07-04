@@ -76,15 +76,21 @@ predict(locmodel,testing,
 BulgariaLogistic<-
   Bulgaria%>%
   mutate( 
-    YearsCodingProf =as.factor(YearsCodingProf), 
-    YearsCoding = as.factor(YearsCoding),
-    FormalEducation = as.factor(FormalEducation),
-    SalaryScaled = ifelse(Salary > 6000,1,0)
+    YearsCodingProf = ifelse(YearsCodingProf > 10 , 1, 0), 
+    YearsCoding = ifelse(YearsCoding > 10, 1, 0),
+    FormalEducation =  ifelse(FormalEducation == "Bachelor’s degree (BA, BS, B.Eng., etc.)" | FormalEducation == "Bachelor’s degree (BA, BS, B.Eng., etc.)" ,1,0),
+    SalaryScaled = ifelse(Salary > 4000,1,0)
   )%>%
   select(Salary,SalaryScaled,YearsCodingProf,YearsCoding,FormalEducation)
 
 donation_model <- glm(SalaryScaled ~ YearsCodingProf + FormalEducation, 
-                      data = BulgariaFactors, family = "binomial")
+                      data = BulgariaLogistic, family = "binomial")
 summary(donation_model)
-testing[1,]$FormalEducation<-as.factor(c("FormalEducationBachelor’s degree (BA, BS, B.Eng., etc.)"))
+
+testing<- data.frame(YearsCodingProf = c(1), 
+                     FormalEducation =  c(1) )
 predict(donation_model,testing, type = "response")
+
+
+
+
