@@ -31,6 +31,7 @@ hc_Bulgaria <- hclust(BulgariaDistance, method = "complete") #average #single
 clusters_k5 <- cutree(hc_Bulgaria, k =5)#h = 1 cut at height
 
 plot(hc_Bulgaria, main = 'Complete Linkage')
+#abline()
 # Create a new dataframe storing these results
 BsalaryClusters <-Bulgaria
 BsalaryClusters$cluster <-clusters_k5
@@ -80,4 +81,6 @@ ggplot(BsalaryClusters, aes(x = Salary, y = YearsCodingProf, color = factor(clus
 BsalaryClusters$cluster <- kmeans(Bulgariascaled,4)$cluster
 ggplot(BsalaryClusters, aes(x = Salary, y = YearsCodingProf, color = factor(cluster), size = cluster)) +
   geom_point()
+
+
 

@@ -109,7 +109,8 @@ Bulgaria$YearsCodingProf<-as.integer(Bulgaria$YearsCodingProf)
 # )
 # #Relevel
 
-Bulgaria<-select(Bulgaria,
+Bulgaria<-Bulgaria%>%
+  select(
                  Salary,
                  VersionControl,
                  DevTy1,
