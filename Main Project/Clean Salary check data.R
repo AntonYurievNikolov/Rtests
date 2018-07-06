@@ -4,7 +4,7 @@
 library(tidyverse)
 library(Hmisc)
 library(ggthemes)
-
+library(stringr)
 WorldData<-read_csv("sur.zip")
 glimpse(WorldData)
 #Select only what we need - rework with dplyr select(contains(".")) to compare time!
