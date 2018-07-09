@@ -16,6 +16,7 @@ ggplot(Bulgaria,aes(x = 1,y=Salary))+
 ###GGPLOT2 tests####
 
 
+
 ###Point 1 - Why you should use GIT ####
 Bulgaria%>%group_by(VersionControl)%>% 
   summarise(MeanByVC=mean(Salary))
@@ -35,7 +36,7 @@ ggplot(Bulgaria,aes(x=NumberMonitors ,y=Salary,color = NumberMonitors))+
                alpha = 0.4) +
   stat_summary(geom = "point", fun.y = median,
                position = posn.d, size = 3,
-               col = "black", shape = "M", size = 25)
+               col = "black", size = 25)
 
 
 #zoom to 3-5k range
@@ -93,6 +94,9 @@ ggplot(Bulgaria,aes(x=YearsCoding ,y=Salary))+
 ggplot(Bulgaria,aes(x=YearsCodingProf   ,y=Salary))+
   geom_point()+
   stat_smooth(method = "lm")
+
+
+
 #Random Checks
 BestPaidJobs<-Bulgaria[Bulgaria$Salary>2*sd(Bulgaria$Salary)+mean(Bulgaria$Salary)  ,]
 
@@ -101,9 +105,9 @@ MoneyBags <- Bulgaria[which.max(Bulgaria$Salary), ]
 #clean the env
 #rm(list=ls())
 ####Ducking Begins
-
-
 Bulgaria%>%group_by(NumberMonitors)%>% 
   summarise(S=mean(Salary))
 
-
+Bulgaria%>%group_by(DevType,Gender )%>% 
+  summarise(S=mean(Salary))%>%
+  arrange(desc(S))

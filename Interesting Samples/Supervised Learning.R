@@ -14,7 +14,7 @@ Bulgariascaled<-
     mutate( 
             YearsCodingProf =nrmlizeR(YearsCodingProf), #scale(YearsCodingProf), 
             YearsCoding = nrmlizeR(YearsCoding),#scale(YearsCoding) ,
-            SalaryScaled = cut(as.integer(Salary),breaks = 4,dig.lab = 7)
+            SalaryScaled = cut(as.integer(Salary),breaks = 2,dig.lab = 7)
           )%>%
     select(Salary,SalaryScaled,YearsCodingProf,YearsCoding)
 
