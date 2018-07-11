@@ -1,4 +1,4 @@
-##Regressions
+##Linear Regressions####
 #fitting multiple models
 
 library(tidyr)
@@ -6,9 +6,9 @@ library(purrr)
 library(broom)
 # Perform a linear regression on each item in the data column
 coefficent<-Bulgaria %>%
-  select(Salary,FormalEducation,IDE) %>%
+  select(Salary,YearsCodingProf,IDE) %>%
   nest(-IDE) %>%
-  mutate(model = map(data, ~ lm(Salary ~ FormalEducation, data = .)))%>%
+  mutate(model = map(data, ~ lm(Salary ~ YearsCodingProf, data = .)))%>%
   mutate(tidied = map(model , tidy)) %>%
   unnest(tidied)
 
@@ -16,25 +16,24 @@ coefficent%>%mutate(p.adjusted  = p.adjust(p.value))%>%filter(p.adjusted <0.05)
 
 #check this for the whole world
 #WOW
-coefficentWorld<-WorldData %>%
-  select(Salary,FormalEducation,Country) %>%
-  filter(!is.na(Country),!is.na(FormalEducation),!is.na(Salary))%>%
-  group_by(Country)%>%
-  mutate(n = n())%>%
-  filter(n>100)%>%
-  ungroup()%>%
-  mutate(FormalEducation = as.factor(FormalEducation),Country = as.factor(Country))%>%
-  nest(-Country) %>%
-  #filter(Country=="United Kingdom") %>%
-  mutate(
-         model = map(data, ~ lm(Salary ~ FormalEducation, data = .)))%>% 
-         mutate(tidied = map(model , tidy))  %>% 
-  unnest(tidied)
-
-coefficentWorld%>%mutate(p.adjusted  = p.adjust(p.value))%>%filter(p.adjusted <0.05)
+# coefficentWorld<-WorldData %>%
+#   select(Salary,YearsCodingProf,Country) %>%
+#   filter(!is.na(Country),!is.na(YearsCodingProf),!is.na(Salary))%>%
+#   group_by(Country)%>%
+#   mutate(n = n())%>%
+#   filter(n>100)%>%
+#   ungroup()%>%
+#   nest(-Country) %>%
+#   #filter(Country=="United Kingdom") %>%
+#   mutate(
+#          model = map(data, ~ lm(Salary ~ YearsCodingProf, data = .)))%>% 
+#          mutate(tidied = map(model , tidy))  %>% 
+#   unnest(tidied)
+# 
+# coefficentWorld%>%mutate(p.adjusted  = p.adjust(p.value))%>%filter(p.adjusted <0.05)
 #cut example
 ggplot(data = Bulgaria, 
-       aes(x = cut(Bulgaria$YearsCoding , breaks = 3), y = Bulgaria$Salary)) + 
+       aes(x = cut(Bulgaria$YearsCodingProf , breaks = 3), y = Bulgaria$Salary)) + 
   geom_boxplot()
 
 # Compute correlation for all non-missing pairs
@@ -64,6 +63,67 @@ sqrt(sum(residuals(mod)^2) / df.residual(mod))
 
 ## Rank points of high leverage --.cooksd for infuence
 aug %>%
-  arrange(desc(.hat)) %>%
+  arrange(desc(.cooksd )) %>%
   head()
+
+#Parallel regression#### 
+modParallel <- lm(data = Bulgaria, Salary~YearsCodingProf + NumberMonitors)
+summary(modParallel)
+# Augment the model
+augmented_mod <- augment(modParallel)
+glimpse(augmented_mod)
+data_space <- ggplot(augmented_mod, aes(x = YearsCodingProf, y = Salary, color = NumberMonitors)) + 
+  geom_point()
+data_space + 
+  geom_line(aes(y = .fitted))
+
+#Adding Interaction between the Variables
+modParallel <- lm(data = Bulgaria, Salary~YearsCodingProf + NumberMonitors+YearsCodingProf:NumberMonitors)
+
+# interaction plot
+ggplot(Bulgaria, aes(y = Salary, x = YearsCodingProf, color = NumberMonitors)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE)
+
+# Logistic Regression####
+# better apply to logistics with dummy
+# Examine the dataset to identify potential independent variables
+#not good for this sample , but checking whether we should pay someone above, below treshold
+
+BulgariaLogistic<-
+  Bulgaria%>%
+  filter(!is.na(FormalEducation),!is.na(YearsCodingProf),!is.na(YearsCoding))%>%
+  mutate( 
+    SalaryScaled = ifelse(Salary > 4000,1,0)
+  )%>%
+  select(SalaryScaled,YearsCodingProf,YearsCoding,FormalEducation)
+
+
+
+#stepwise regression##
+null_model <- glm(SalaryScaled ~ 1, data = BulgariaLogistic, family = "binomial")
+full_model <- glm(SalaryScaled ~ ., data = BulgariaLogistic, family = "binomial")
+step_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "forward")
+step_prob <- predict(step_model, type = "response")
+ROC <- roc(BulgariaLogistic$SalaryScaled, step_prob)
+plot(ROC, col = "red")
+auc(ROC)
+
+#Buidling the model
+model <- glm(SalaryScaled ~ YearsCodingProf, 
+             data = BulgariaLogistic, family = "binomial")
+summary(model)
+#testing<- data.frame(YearsCodingProf = c(1), 
+#                    FormalEducation =  c(1) )
+#predict(model,testing, type = "response")
+BulgariaLogistic$PredictedSalaryProb<-predict(model, type = "response")
+BulgariaLogistic$PredictedSalar<-ifelse( BulgariaLogistic$PredictedSalaryProb > 
+                                          0.5 , 1,0)
+
+mean(BulgariaLogistic$PredictedSalar == BulgariaLogistic$SalaryScaled) 
+ROC <- roc(BulgariaLogistic$SalaryScaled, BulgariaLogistic$PredictedSalaryProb)
+plot(ROC, col = "blue")
+# Calculate the area under the curve (AUC)
+auc(ROC)
+
 
