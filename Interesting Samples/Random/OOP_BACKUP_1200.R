@@ -1,4 +1,4 @@
-
+<<<<<<< HEAD
 # Explore microwave oven class
 microwave_oven_factory
 
@@ -97,7 +97,7 @@ microwave_oven_factory <- R6Class(
         private$shared$safety_warning
       } else {
         private$shared$safety_warning <- value
-
+=======
 #generic method - .x adds overload for class x
 # Create a default method for get_n_elements
 get_n_elements.default<-function(x,...){
@@ -181,12 +181,13 @@ microwave_oven_factory <- R6Class(
           value, lower = 0, upper = private$..power_rating_watts
         )
         private$..power_level_watts <- value
-
+>>>>>>> no message
       }
     }
   )
 )
 
+<<<<<<< HEAD
 # Create two microwave ovens
 a_microwave_oven <- microwave_oven_factory$new()
 another_microwave_oven <- microwave_oven_factory$new()
@@ -241,7 +242,7 @@ rm(a_smart_microwave)
 
 # Force garbage collection
 gc()
-
+=======
 # Make a microwave
 a_microwave_oven <- microwave_oven_factory$new(650,T)
 
@@ -251,4 +252,4 @@ a_microwave_oven <- microwave_oven_factory$new()
 
 # Call cook method for 1 second
 a_microwave_oven$cook(1)
-
+>>>>>>> no message
