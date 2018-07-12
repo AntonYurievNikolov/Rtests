@@ -126,8 +126,7 @@ ggplot(BulgariaLogistic, aes(y=SalaryScaled,x=YearsCodingProf)) +
 #                    FormalEducation =  c(1) )
 #predict(model,testing, type = "response")
 BulgariaLogistic$PredictedSalaryProb<-predict(model, type = "response")
-BulgariaLogistic$PredictedSalar<-ifelse( BulgariaLogistic$PredictedSalaryProb > 
-                                          0.5 , 1,0)
+BulgariaLogistic$PredictedSalar<-ifelse( BulgariaLogistic$PredictedSalaryProb > 0.6, 1,0)
 
 mean(BulgariaLogistic$PredictedSalar == BulgariaLogistic$SalaryScaled) 
 ROC <- roc(BulgariaLogistic$SalaryScaled, BulgariaLogistic$PredictedSalaryProb)
@@ -135,6 +134,8 @@ plot(ROC, col = "blue")
 # Calculate the area under the curve (AUC)
 auc(ROC)
 
+#EDA
+pairs(BulgariaLogistic)
 
 
 #stepwise regression##
