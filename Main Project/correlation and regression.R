@@ -66,7 +66,7 @@ aug %>%
   arrange(desc(.cooksd )) %>%
   head()
 
-#Parallel regression#### 
+#Parallel/Multi regression#### 
 modParallel <- lm(data = Bulgaria, Salary~YearsCodingProf + NumberMonitors)
 summary(modParallel)
 # Augment the model
@@ -85,6 +85,10 @@ ggplot(Bulgaria, aes(y = Salary, x = YearsCodingProf, color = NumberMonitors)) +
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE)
 
+#Multiple Regression#
+modMulti <- lm(data = Bulgaria, Salary~YearsCodingProf +  DatabaseWorkedWith )
+summary(modMulti)
+
 # Logistic Regression####
 # better apply to logistics with dummy
 # Examine the dataset to identify potential independent variables
@@ -96,23 +100,28 @@ BulgariaLogistic<-
   mutate( 
     SalaryScaled = ifelse(Salary > 4000,1,0)
   )%>%
-  select(SalaryScaled,YearsCodingProf,YearsCoding,FormalEducation)
-
-
-
-#stepwise regression##
-null_model <- glm(SalaryScaled ~ 1, data = BulgariaLogistic, family = "binomial")
-full_model <- glm(SalaryScaled ~ ., data = BulgariaLogistic, family = "binomial")
-step_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "forward")
-step_prob <- predict(step_model, type = "response")
-ROC <- roc(BulgariaLogistic$SalaryScaled, step_prob)
-plot(ROC, col = "red")
-auc(ROC)
+  group_by(YearsCodingProf)%>%
+  mutate( 
+    ChanceForSal = mean(SalaryScaled)
+  )%>%
+  select(SalaryScaled,YearsCodingProf,YearsCoding,FormalEducation,ChanceForSal)
 
 #Buidling the model
 model <- glm(SalaryScaled ~ YearsCodingProf, 
-             data = BulgariaLogistic, family = "binomial")
+             data = BulgariaLogistic, family = binomial)
 summary(model)
+
+ggplot(BulgariaLogistic, aes(y=SalaryScaled,x=YearsCodingProf)) + 
+  geom_line(aes(x=YearsCodingProf,y=ChanceForSal, col ="red"))+
+  geom_jitter(width = 0 , height = 0.05, alpha = .5)+
+  geom_smooth(method = "glm",method.args=list(family = "binomial"), se = F)
+
+#odds scale
+#mutate(odds_hat = .fitted / (1 - .fitted))
+
+#log scale
+# mutate(log_odds_hat = log(.fitted / (1 - .fitted)))
+
 #testing<- data.frame(YearsCodingProf = c(1), 
 #                    FormalEducation =  c(1) )
 #predict(model,testing, type = "response")
@@ -126,4 +135,14 @@ plot(ROC, col = "blue")
 # Calculate the area under the curve (AUC)
 auc(ROC)
 
+
+
+#stepwise regression##
+null_model <- glm(SalaryScaled ~ 1, data = BulgariaLogistic, family = "binomial")
+full_model <- glm(SalaryScaled ~ ., data = BulgariaLogistic, family = "binomial")
+step_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "forward")
+step_prob <- predict(step_model, type = "response")
+ROC <- roc(BulgariaLogistic$SalaryScaled, step_prob)
+plot(ROC, col = "red")
+auc(ROC)
 
