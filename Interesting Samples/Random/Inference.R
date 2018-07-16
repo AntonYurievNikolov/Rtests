@@ -1,4 +1,5 @@
 # install.packages("NHANES")
+library(NHANES)
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1)
 {
   n <- nrow(tbl)
@@ -9,8 +10,7 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1)
   
   dplyr::group_by(rep_tbl, replicate)
 }
-#install.packages("oilabs") 
-library(NHANES)
+
 
 # Perform 10 permutations
 homeown_perm <- homes %>%
@@ -56,4 +56,47 @@ disc_perm %>%
 disc_perm %>%
   summarize(mean( diff_orig<= diff_perm))
 
-#opportunity cost
+#Confidence interval#### 
+#resampling from the same sample
+# Select one poll from which to resample: one_poll
+one_poll <- all_polls %>%
+  filter(poll == 1) %>%
+  select(vote)
+
+# Generate 1000 resamples of one_poll: one_poll_boot_30
+one_poll_boot_30 <- one_poll %>%
+  rep_sample_n(size = nrow(one_poll), replace = T, reps = 1000 )
+
+# Compute p-hat for each poll: ex1_props
+ex1_props <- all_polls %>% 
+  group_by(poll) %>% 
+  summarize(prop_yes = mean(vote == 1))
+
+# Compute p-hat* for each resampled poll: ex2_props
+ex2_props <- one_poll_boot_30 %>%
+  group_by(replicate)%>%
+  summarize( prop_yes = mean(vote == 1))
+
+# Compare variability of p-hat and p-hat*
+ex1_props %>% summarize(sd(prop_yes))
+ex2_props %>% summarize(sd(prop_yes))
+
+#T interval -2SE ####
+
+# Again, set the one sample that was collected
+one_poll <- all_polls %>%
+  filter(poll == 1) %>%
+  select(vote)
+
+# Compute p-hat from one_poll: p_hat
+p_hat <- mean(one_poll$vote)
+
+# Bootstrap to find the SE of p-hat: one_poll_boot
+one_poll_boot <- one_poll %>%
+  rep_sample_n(30, replace = TRUE, reps = 1000) %>%
+  summarize(prop_yes_boot = mean(vote == 1) )
+
+# Create an interval of plausible values
+one_poll_boot %>%
+  summarize(lower = p_hat - 2 * sd(prop_yes_boot),
+            upper = p_hat + 2 * sd(prop_yes_boot))
