@@ -10,6 +10,7 @@
 library(shiny)
 library(shinydashboard)
 
+
 header <- dashboardHeader(
   # Create a notification drop down menu
   dropdownMenu(
@@ -23,23 +24,31 @@ header <- dashboardHeader(
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem(text = "Dashboard", tabName = "dashboard"),
-    menuItem(text = "Inputs", tabName = "inputs")
+    menuItem(text = "Inputs", tabName = "inputs"),
+    selectInput(inputId = "name", 
+                label = "Name",
+                choices = c("A","B")
+    )
   )
 )
 
 body <- dashboardBody(
 
-  tabItems(
+  # tabItems(
+  #   tabItem(
+  #     tabName = "dashboard",
+  #     tabBox(
+  #       title =  "International Space Station Fun Facts",
+  #       tabPanel("Fun Fact 1"),
+  #       tabPanel("Fun Fact 2")
+  #     )
+  #   ),
     tabItem(
-      tabName = "dashboard",
-      tabBox(
-        title =  "International Space Station Fun Facts",
-        tabPanel("Fun Fact 1"),
-        tabPanel("Fun Fact 2")
+      
+        tabName = "inputs",
+        textOutput("name")
       )
-    ),
-    tabItem(tabName = "inputs")
-  )
+  # )
 )
 
 
@@ -47,6 +56,15 @@ ui <- dashboardPage(header = header,
                     sidebar = sidebar,
                     body = body
 )
+
+
+server <- function(input, output) {
+  output$name <- renderText({
+    input$name
+  })
+}
+
+
 shinyApp(ui, server)
 
 # # Define UI for application that draws a histogram

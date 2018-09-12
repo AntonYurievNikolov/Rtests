@@ -21,8 +21,17 @@ ggplot(Bulgaria,aes(x = 1,y=Salary))+
 Bulgaria%>%group_by(VersionControl)%>% 
   summarise(MeanByVC=mean(Salary))
 
-ggplot(Bulgaria,aes(x=Salary,y=VersionControl, col = IDE)) + 
-  geom_point() + ggplot2::scale_x_log10()
+ggplot(Bulgaria,aes(x=Salary,col = IDE)) + 
+  geom_histogram() + 
+  facet_wrap(~VersionControl)+
+  ggplot2::scale_x_log10()
+
+ggplot(Bulgaria,aes(y=Salary,x=VersionControl)) + 
+  geom_boxplot()+
+  theme(
+        axis.text.x=element_blank()
+        axis.ticks.x=element_blank())
+
 #Point 2  - The POWER OF MONITORS!!!####
 Bulgaria%>%group_by(NumberMonitors)%>% 
   summarise(MeanPerMonitor=mean(Salary))

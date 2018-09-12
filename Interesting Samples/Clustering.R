@@ -83,4 +83,3 @@ ggplot(BsalaryClusters, aes(x = Salary, y = YearsCodingProf, color = factor(clus
   geom_point()
 
 
-
