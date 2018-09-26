@@ -10,9 +10,7 @@
 library(shiny)
 library(shinydashboard)
 
-
 header <- dashboardHeader(
-  # Create a notification drop down menu
   dropdownMenu(
     type = "notifications",
     notificationItem(
@@ -24,47 +22,48 @@ header <- dashboardHeader(
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem(text = "Dashboard", tabName = "dashboard"),
-    menuItem(text = "Inputs", tabName = "inputs"),
-    selectInput(inputId = "name", 
-                label = "Name",
-                choices = c("A","B")
-    )
+    menuItem(text = "Inputs", tabName = "inputs")
   )
 )
 
+# body <- dashboardBody(
+# 
+#   tabItems(
+#     tabItem(
+#       tabName = "dashboard",
+#       tabBox(
+#         title =  "International Space Station Fun Facts",
+#         tabPanel("Fun Fact 1"),
+#         tabPanel("Fun Fact 2")
+#       )
+#     ),
+#     tabItem(tabName = "inputs")
+#   )
+# )
+
+server <- function(input, output, session) {
+  reactive_starwars_data <- reactiveFileReader(
+    intervalMillis = 1000,
+    session = session,
+    filePath = starwars_url,
+    readFunc = function(filePath) { 
+      read.csv(url(filePath))
+    }
+  )
+  
+  output$table <- renderTable({
+    reactive_starwars_data()
+  })
+}
+
 body <- dashboardBody(
-
-  # tabItems(
-  #   tabItem(
-  #     tabName = "dashboard",
-  #     tabBox(
-  #       title =  "International Space Station Fun Facts",
-  #       tabPanel("Fun Fact 1"),
-  #       tabPanel("Fun Fact 2")
-  #     )
-  #   ),
-    tabItem(
-      
-        tabName = "inputs",
-        textOutput("name")
-      )
-  # )
+  tableOutput("table")
 )
-
 
 ui <- dashboardPage(header = header,
                     sidebar = sidebar,
                     body = body
 )
-
-
-server <- function(input, output) {
-  output$name <- renderText({
-    input$name
-  })
-}
-
-
 shinyApp(ui, server)
 
 # # Define UI for application that draws a histogram
