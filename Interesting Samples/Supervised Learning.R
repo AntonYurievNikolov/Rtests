@@ -70,5 +70,6 @@ locmodel <- naive_bayes(
                         )
 predict(locmodel,testing,
         type = "prob"
+        # ,interval ="confidence"
 )
 
