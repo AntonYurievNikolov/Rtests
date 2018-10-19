@@ -16,7 +16,6 @@ ggplot(Bulgaria,aes(x = 1,y=Salary))+
 ###GGPLOT2 tests####
 
 
-
 ###Point 1 - Why you should use GIT ####
 Bulgaria%>%group_by(VersionControl)%>% 
   summarise(MeanByVC=mean(Salary))
@@ -120,3 +119,10 @@ Bulgaria%>%group_by(NumberMonitors)%>%
 Bulgaria%>%group_by(DevType,Gender )%>% 
   summarise(S=mean(Salary))%>%
   arrange(desc(S))
+?sd(Bulgaria$Salary)
+#T.TEST
+c(rnorm(75, mean = 3000, sd = 2000))
+t.test(Bulgaria$Salary, y = Bulgaria$Salary-300,
+       alternative = c("two.sided"),
+       mu = 0, paired =F, 
+       conf.level = 0.95)
