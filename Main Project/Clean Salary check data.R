@@ -167,7 +167,7 @@ Bulgaria<-Bulgaria%>%
 getcharCols <- map_chr(Bulgaria,is.character)
 Bulgaria[,getcharCols==T]<-map(Bulgaria[,getcharCols==T], factor) 
 
-
+# Bulgaria<-filter(Bulgaria,DevType == "QA or test developer")
 # cor(Bulgaria) 
 # Check correlations (as scatterplots), distribution and print corrleation coefficient 
 # ggpairs(Bulgaria, cardinality_threshold = 20) 

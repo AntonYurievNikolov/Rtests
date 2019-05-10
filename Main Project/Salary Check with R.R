@@ -96,7 +96,7 @@ ggplot(Bulgaria,aes(x=1 ,fill=FormalEducation))+
 ggplot(Bulgaria,aes(x=YearsCoding ,y=Salary))+
   geom_point()+
   stat_smooth(aes(group = 1))+
-  stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "errorbar", width = 0.1)+
+  stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "errorbar", width = 0.1)
 
 
 ggplot(Bulgaria,aes(x=YearsCodingProf   ,y=Salary))+
@@ -119,10 +119,10 @@ Bulgaria%>%group_by(NumberMonitors)%>%
 Bulgaria%>%group_by(DevType,Gender )%>% 
   summarise(S=mean(Salary))%>%
   arrange(desc(S))
-?sd(Bulgaria$Salary)
+sd(Bulgaria$Salary)
 #T.TEST
 c(rnorm(75, mean = 3000, sd = 2000))
-t.test(Bulgaria$Salary, y = Bulgaria$Salary-300,
+t.test(Bulgaria$Salary, y = Bulgaria$Salary-1000,
        alternative = c("two.sided"),
        mu = 0, paired =F, 
        conf.level = 0.95)
