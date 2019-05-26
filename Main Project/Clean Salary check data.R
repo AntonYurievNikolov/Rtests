@@ -1,7 +1,7 @@
-#install.packages("tidyverse")
-#install.packages("Hmisc")
-#install.packages("ggthemes")
-#install.packages("GGally")
+# install.packages("tidyverse")
+# install.packages("Hmisc")
+# install.packages("ggthemes")
+# install.packages("GGally")
 library(tidyverse)
 library(Hmisc)
 library(ggthemes)
@@ -104,8 +104,8 @@ Bulgaria<-Bulgaria %>%
 Bulgaria<-Bulgaria%>%
   #thisone was done above. This approach is better, but we work with too small dataset
   #separate( col = DevType, into = c("DevTy1","DevTy2","DevTy3"), sep = ";")%>%
-  mutate(DevType = str_split(DevType,";"))%>%
-  unnest(DevType)%>%
+  # mutate(DevType = str_split(DevType,";"))%>%
+  # unnest(DevType)%>%
   #mainly looking for GIT vs the Rest so 1 column will do
   #this is same as with str_split ( n = 1, simplify = T)
   separate( col = VersionControl, into = c("VersionControl"), sep = ";")%>%
@@ -181,4 +181,7 @@ Bulgaria[,getcharCols==T]<-map(Bulgaria[,getcharCols==T], factor)
 #         axis.title = element_text(face = "bold", size = 14))
 # theme_set(custom_theme)
 # theme_set(theme_classic())
-
+mean(Bulgaria$Salary)
+mean(Bulgaria$YearsCoding)
+# Bulgaria$Age<-as.numeric(Bulgaria$Age)
+mean(Bulgaria$Age[!is.na(Bulgaria$Age)])
