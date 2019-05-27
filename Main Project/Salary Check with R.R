@@ -113,7 +113,8 @@ MoneyBags <- Bulgaria[which.max(Bulgaria$Salary), ]
 #clean the env
 #rm(list=ls())
 ####Ducking Begins
-Bulgaria%>%group_by(NumberMonitors)%>% 
+Bulgaria%>%
+  group_by(NumberMonitors)%>% 
   summarise(S=mean(Salary))
 
 Bulgaria%>%group_by(DevType,Gender )%>% 
