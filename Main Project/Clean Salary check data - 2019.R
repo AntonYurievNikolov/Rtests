@@ -113,7 +113,4 @@ Bulgaria$YearsCodingProf<-as.integer(Bulgaria$YearsCodingProf)
 getcharCols <- map_chr(Bulgaria,is.character)
 Bulgaria[,getcharCols==T]<-map(Bulgaria[,getcharCols==T], factor) 
 
-glimpse(Bulgaria)
-mean(Bulgaria$Salary)
-mean(Bulgaria$YearsCoding)
-mean(Bulgaria$Age[!is.na(Bulgaria$Age)])
+
