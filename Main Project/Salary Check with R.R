@@ -28,7 +28,7 @@ ggplot(Bulgaria,aes(x=Salary,col = IDE)) +
 ggplot(Bulgaria,aes(y=Salary,x=VersionControl)) + 
   geom_boxplot()+
   theme(
-        axis.text.x=element_blank()
+        axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 
 #Point 2  - The POWER OF MONITORS!!!####

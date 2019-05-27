@@ -9,7 +9,7 @@ library(stringr)
 library(GGally)
 library(stringr)
 WorldData<-read_csv("sur2019.zip")
-glimpse(WorldData)
+# glimpse(WorldData)
 #Select only what we need - rework with dplyr select(contains(".")) to compare time!
 # DontWant1<-str_detect(names(WorldData),"Open")+
 #   str_detect(names(WorldData),"JobContactPrior")+
@@ -25,10 +25,13 @@ glimpse(WorldData)
 #dim(WorldData)
 #names(WorldData)
 #Convert To monthly or ignore
-WorldData$Salary <- WorldData$CompFreq
+
+
 WorldData<-  WorldData %>%
   mutate(Salary = if_else(CompFreq == "Yearly" , CompTotal/12,
                      if_else(CompFreq == "Monthly",CompTotal, NA_real_)))
+
+
 # WorldData[c("Salary","CompFreq","CompTotal")]
   
 #change to rename  
@@ -37,9 +40,25 @@ WorldData$YearsCodingProf <- WorldData$YearsCodePro
 WorldData$FormalEducation <- WorldData$EdLevel
 WorldData$CompanySize <- WorldData$OrgSize  
 
+#Filter the dataset to BG only
 Bulgaria<-WorldData %>%
-  filter(Country=="Bulgaria",!is.na(Salary)) 
-names(Bulgaria)
+  filter(Country=="Bulgaria",!is.na(Salary)) %>%
+  arrange(desc(Salary))
+
+#Currency Adj
+Bulgaria<- Bulgaria%>%
+  mutate(CurrencySymbol = if_else(is.na(CurrencySymbol),"",CurrencySymbol))%>%
+  mutate(Salary = if_else(CurrencySymbol == "EUR" , Salary*1.96,
+                          if_else(CurrencySymbol == "USD",Salary*1.76,Salary)))
+
+
+#first remove "wildly innacurate" values, then remove extreme outliers ~(1 in 15787)
+Bulgaria<-Bulgaria %>% 
+  filter (Salary <20000, Salary > 301) %>% 
+  #Alternativies for outliers 
+  #4*sd(Bulgaria$Salary)+mean(Bulgaria$Salary)
+  filter (Salary <3*IQR(Bulgaria$Salary)+mean(Bulgaria$Salary)) %>% 
+  arrange(desc(Salary))
 
 Bulgaria<-Bulgaria%>%
   select(
@@ -80,13 +99,7 @@ Bulgaria$DevEnviron[str_detect(Bulgaria$DevEnviron,"IntelliJ")] <-"Java"
 Bulgaria$DevEnviron[str_detect(Bulgaria$DevEnviron,"PHP")]  <-"PHP"
 Bulgaria$DevEnviron[str_detect(Bulgaria$DevEnviron,"Xcode")]  <-"Apple"
 
-#first remove "wildly innacurate" values, then remove extreme outliers ~(1 in 15787)
-Bulgaria<-Bulgaria %>% 
-  filter (Salary <20000, Salary > 301) %>% 
-  #Alternativies for outliers 
-  #4*sd(Bulgaria$Salary)+mean(Bulgaria$Salary)
-  filter (Salary <3*IQR(Bulgaria$Salary)+mean(Bulgaria$Salary)) %>% 
-  arrange(desc(Salary))
+
 
 
 Bulgaria<-Bulgaria%>%
@@ -97,8 +110,6 @@ Bulgaria<-Bulgaria%>%
   # unnest(DevType)%>%
   #mainly looking for GIT vs the Rest so 1 column will do
   #this is same as with str_split ( n = 1, simplify = T)
-
-  separate( col = YearsCoding, into = c("YearsCoding"), sep = "-") %>%
   separate( col = YearsCoding, into = c("YearsCoding"), sep = "-") %>%
   separate( col = YearsCodingProf, into = c("YearsCodingProf"), sep = "-")
   

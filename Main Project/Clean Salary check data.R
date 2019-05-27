@@ -38,10 +38,17 @@ DontWant1<-str_detect(names(WorldData),"Assess")+
 WorldData<-WorldData[,!DontWant1]
 #dim(WorldData)
 #names(WorldData)
+WorldData<-  WorldData %>%
+  mutate(Salary = if_else(SalaryType == "Yearly" , Salary/12,
+                          if_else(SalaryType == "Monthly",Salary, NA_real_)))
 
 Bulgaria<-WorldData %>%
   filter(Country=="Bulgaria",!is.na(Salary)) 
 #Select only what we need
+Bulgaria<- Bulgaria%>%
+  mutate(CurrencySymbol = if_else(is.na(CurrencySymbol),"",CurrencySymbol))%>%
+  mutate(Salary = if_else(CurrencySymbol == "EUR" , Salary*1.96,
+                                    if_else(CurrencySymbol == "USD",Salary*1.76,Salary)))
 
 #Create Dev Categories
 Bulgaria$IDE[is.na(Bulgaria$IDE)]<-"Unknown"
