@@ -1,9 +1,10 @@
 ##Linear Regressions####
 #fitting multiple models
-
+# install.packages('pROC')
 library(tidyr)
 library(purrr)
 library(broom)
+library(pROC)
 # Perform a linear regression on each item in the data column
 coefficent<-Bulgaria %>%
   select(Salary,YearsCodingProf,IDE) %>%
@@ -126,7 +127,7 @@ ggplot(BulgariaLogistic, aes(y=SalaryScaled,x=YearsCodingProf)) +
 #                    FormalEducation =  c(1) )
 #predict(model,testing, type = "response")
 BulgariaLogistic$PredictedSalaryProb<-predict(model, type = "response")
-BulgariaLogistic$PredictedSalar<-ifelse( BulgariaLogistic$PredictedSalaryProb > 0.6, 1,0)
+BulgariaLogistic$PredictedSalar<-ifelse( BulgariaLogistic$PredictedSalaryProb > 0.3, 1,0)
 
 mean(BulgariaLogistic$PredictedSalar == BulgariaLogistic$SalaryScaled) 
 ROC <- roc(BulgariaLogistic$SalaryScaled, BulgariaLogistic$PredictedSalaryProb)
