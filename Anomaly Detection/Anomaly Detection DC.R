@@ -57,3 +57,45 @@ plot(YearsCoding ~ Salary, data = Bulgaria, cex = sqrt(score), pch = 20)
 # Bulgaria_lof <- lof(scale(Bulgaria), k = 5)
 # Bulgaria$score <- Bulgaria_lof
 # plot(YearsCoding ~ Salary, data = Bulgaria, cex = score, pch = 20)
+#Isolation Forest####
+# install.packages('isofor')
+# wine_forest <- iForest(wine, nt = 100, phi = 200)
+# wine_score <- predict(wine_forest, newdata = wine)
+# wine$score <- wine_score
+# Sequence of values for pH and alcohol
+# ph_seq <- seq(min(wine$pH),  max(wine$pH), length.out = 25)
+# alcohol_seq <- seq(min(wine$alcohol),  max(wine$alcohol), length.out = 25)
+# wine_grid <- expand.grid(pH = ph_seq, alcohol = alcohol_seq)
+# plot(pH ~ alcohol, data = wine_grid, pch = 20)
+# wine_grid$score <- predict(wine_forest, wine_grid)
+# contourplot(score ~ pH + alcohol, data = wine_grid, region = TRUE)
+
+#Showcase - Still meaningless as all libraries are not part of CRAN (cannot be used properly with PBI)####
+# head(thyroid)
+# table(thyroid$label)
+# prop_disease <- 22 / 1000
+# thyroid_forest <- iForest(thyroid[, -1], nt = 200, phi = 100)
+# thyroid$iso_score <- predict(thyroid_forest, thyroid[, -1])
+# boxplot(iso_score ~ label, data = thyroid, col = "olivedrab4")
+# 
+# # Scale the measurement columns of thyroid
+# scaled_thyroid_measurements <- scale(thyroid[, -1])
+# lof_score <- lof(scaled_thyroid_measurements, k = 10)
+# high_lof <- quantile(lof_score, probs = 0.98)  
+# thyroid$binary_lof <- as.numeric(lof_score >= high_lof)
+# high_iso <- quantile(iso_score, probs = 0.98)  
+# thyroid$binary_iso <- as.numeric(iso_score >= high_iso)
+# table(thyroid$label, thyroid$binary_iso)
+# table(thyroid$label, thyroid$binary_lof)
+# iso_prop <- (970 + 12) / 1000
+# # lof_prop <- (958 + 0) / 1000
+# 
+# #Working with categorical features
+# # Calculate Gower's distance matrix
+# thyroid_dist <- daisy(thyroid[, -1], metric = "gower")
+# 
+# # Generate LOF scores for thyroid data
+# thyroid_lof <- lof(thyroid_dist, k = 10)
+# 
+# # Range of values in the distance matrix
+# range(as.matrix(thyroid_dist))
