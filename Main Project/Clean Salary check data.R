@@ -8,6 +8,8 @@ library(ggthemes)
 library(stringr)
 library(GGally)
 library(stringr)
+#set working directory to current File location
+# setwd(getSrcDirectory()[1])
 WorldData<-read_csv("sur.zip")
 glimpse(WorldData)
 #Select only what we need - rework with dplyr select(contains(".")) to compare time!
@@ -173,7 +175,7 @@ Bulgaria<-Bulgaria%>%
 #Turn all non-numeric values into factors
 getcharCols <- map_chr(Bulgaria,is.character)
 Bulgaria[,getcharCols==T]<-map(Bulgaria[,getcharCols==T], factor) 
-
+write_csv(Bulgaria, path = 'C:/Users/Anton/Desctop/Bulgaria.csv', append = FALSE)
 # Bulgaria<-filter(Bulgaria,DevType == "QA or test developer")
 # cor(Bulgaria) 
 # Check correlations (as scatterplots), distribution and print corrleation coefficient 

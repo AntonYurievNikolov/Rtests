@@ -123,7 +123,9 @@ Bulgaria%>%group_by(DevType,Gender )%>%
 sd(Bulgaria$Salary)
 #T.TEST
 c(rnorm(75, mean = 3000, sd = 2000))
-t.test(Bulgaria$Salary, y = Bulgaria$Salary-1000,
-       alternative = c("two.sided"),
+test<-t.test(Bulgaria$Salary, y = Bulgaria$Salary-1000,
        mu = 0, paired =F, 
        conf.level = 0.95)
+
+
+qnorm(1-test$p.value)

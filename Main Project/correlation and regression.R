@@ -111,7 +111,7 @@ BulgariaLogistic<-
 model <- glm(SalaryScaled ~ YearsCodingProf, 
              data = BulgariaLogistic, family = binomial)
 summary(model)
-
+-2.28963 + BulgariaLogistic$YearsCodingProf* 0.34275
 ggplot(BulgariaLogistic, aes(y=SalaryScaled,x=YearsCodingProf)) + 
   geom_line(aes(x=YearsCodingProf,y=ChanceForSal, col ="red"))+
   geom_jitter(width = 0 , height = 0.05, alpha = .5)+
